@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./src
+    command:
+      [
+        "sh",
+        "-c",
+        "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+      ]
+    volumes:
+      - ./src/:/usr/src/app/
+    ports:
+      - "8002:8000"
+      - "5678:5678"
