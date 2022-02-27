@@ -10,6 +10,7 @@ services:
       - "8002:8000"
     environment:
       - DATABASE_URL=postgresql://hello_fastapi:hello_fastapi@db/hello_fastapi_dev
+    container_name: web
 
   db:
     image: postgres:13-alpine
@@ -21,6 +22,7 @@ services:
       - POSTGRES_USER=hello_fastapi
       - POSTGRES_PASSWORD=hello_fastapi
       - POSTGRES_DB=hello_fastapi_dev
+    container_name: db
 
 volumes:
   postgres_data:
