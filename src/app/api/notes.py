@@ -49,3 +49,14 @@ async def update_note(id: int, payload: NoteSchema):
     }
 
     return response_object
+
+
+@router.delete("/{id}", response_model=NoteDb, status_code=200)
+async def delete_note(id: int):
+    note = await crud.get(id)
+    if not note:
+        raise HTTPException(status_code=404, detail="Not Found")
+
+    await crud.delete(id)
+
+    return note
