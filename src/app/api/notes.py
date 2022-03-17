@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Path
 from app.api import crud
 from app.api.models import NoteDb, NoteSchema
 from typing import List
@@ -20,7 +20,7 @@ async def create_note(payload: NoteSchema):
 
 
 @router.get("/{id}", response_model=NoteDb, status_code=200)
-async def get_note(id: int):
+async def get_note(id: int = Path(..., gt=0)):
     note = await crud.get(id)
     if not note:
         raise HTTPException(status_code=404, detail="Not Found")
@@ -35,7 +35,7 @@ async def get_all_notes():
 
 
 @router.put("/{id}", response_model=NoteDb, status_code=200)
-async def update_note(id: int, payload: NoteSchema):
+async def update_note(payload: NoteSchema, id: int = Path(..., gt=0)):
     note = await crud.get(id)
     if not note:
         raise HTTPException(status_code=404, detail="Not Found")
@@ -52,7 +52,7 @@ async def update_note(id: int, payload: NoteSchema):
 
 
 @router.delete("/{id}", response_model=NoteDb, status_code=200)
-async def delete_note(id: int):
+async def delete_note(id: int = Path(..., gt=0)):
     note = await crud.get(id)
     if not note:
         raise HTTPException(status_code=404, detail="Not Found")
